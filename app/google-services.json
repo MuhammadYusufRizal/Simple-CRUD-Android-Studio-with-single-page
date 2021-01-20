@@ -1,0 +1,39 @@
+{
+  "project_info": {
+    "project_number": "870362563142",
+    "project_id": "crud-mahasiswa-dae24",
+    "storage_bucket": "crud-mahasiswa-dae24.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:870362563142:android:435a1a3e7dd7a7079d8047",
+        "android_client_info": {
+          "package_name": "com.example.uts_ppb"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "870362563142-scfrr5340rc6e64l9jp53sn2o8ulk3e6.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCRwd5s3AoPA9B2UHUjm3j-XYtrW7Id6KM"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "870362563142-scfrr5340rc6e64l9jp53sn2o8ulk3e6.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
