@@ -3,13 +3,9 @@ package com.example.uts_ppb;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.recyclerview.widget.LinearLayoutManager;
-import androidx.recyclerview.widget.RecyclerView;
 
-import android.content.Intent;
 import android.os.Bundle;
 import android.text.TextUtils;
-import android.util.Log;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.Button;
@@ -27,7 +23,7 @@ import java.util.ArrayList;
 
 
 public class MainActivity extends AppCompatActivity {
-    private DatabaseReference database;
+    private DatabaseReference database = FirebaseDatabase.getInstance().getReference();;
     private ArrayList<Mahasiswa> listmhs;
 
     TextInputEditText inputNama;
@@ -35,15 +31,13 @@ public class MainActivity extends AppCompatActivity {
     Button btnAdd, btnEdit, btnDelete;
     ListView listview;
 
-    int index;
-    String item, id;
+    public int index;
+    public String item, id, key;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-
-        database = FirebaseDatabase.getInstance().getReference();
 
         listview = findViewById(R.id.listview);
 
@@ -61,7 +55,7 @@ public class MainActivity extends AppCompatActivity {
                     Mahasiswa mahasiswa = dataSnapshot.getValue(Mahasiswa.class);
                     listmhs.add(mahasiswa);
                 }
-                customAdapter adapter = new customAdapter(MainActivity.this, R.layout.row_negara, listmhs);
+                customAdapter adapter = new customAdapter(MainActivity.this, R.layout.row_mahasiswa, listmhs);
                 listview.setAdapter(adapter);
             }
             @Override
@@ -71,10 +65,10 @@ public class MainActivity extends AppCompatActivity {
         listview.setOnItemLongClickListener(new AdapterView.OnItemLongClickListener() {
             @Override
             public boolean onItemLongClick(AdapterView<?> adapterView, View view, int position, long id) {
-                item = adapterView.getItemAtPosition(position).toString() + "terpilih";
-                item = adapterView.getItemAtPosition(position).toString() + "terpilih";
+                item = listmhs.get(position).getKey().toString() + "terpilih";
                 index = position;
                 Toast.makeText(MainActivity.this, item, Toast.LENGTH_SHORT).show();
+                key = listmhs.get(position).getKey().toString();
                 inputNama.setText(listmhs.get(position).getNama().toString());
                 inputNIM.setText(listmhs.get(position).getNim().toString());
                 return true;
@@ -94,18 +88,10 @@ public class MainActivity extends AppCompatActivity {
                             .show();
                 }
                 else{
-                    if(!namaVal.matches("\\w+") || !nimVal.matches("\\w+")){
-                        new AlertDialog.Builder(MainActivity.this)
-                                .setTitle("Input hanya berupa karakter dan angka!")
-                                .setNegativeButton("Ok", null)
-                                .show();
-                    }
-                    else{
-                        submit(new Mahasiswa(namaVal, nimVal));
-                        inputNama.setText("");
-                        inputNIM.setText("");
-                    }
-
+                    String key = database.push().getKey();
+                    submit(new Mahasiswa(key, namaVal, nimVal));
+                    inputNama.setText("");
+                    inputNIM.setText("");
                 }
             }
         });
@@ -123,17 +109,10 @@ public class MainActivity extends AppCompatActivity {
                             .show();
                 }
                 else{
-                    if(!namaVal.matches("\\w+") || !nimVal.matches("\\w+")){
-                        new AlertDialog.Builder(MainActivity.this)
-                                .setTitle("Input hanya berupa karakter dan angka!")
-                                .setNegativeButton("Ok", null)
-                                .show();
-                    }
-                    else {
-                        edit(new Mahasiswa(namaVal, nimVal), nimVal);
-                        inputNama.setText("");
-                        inputNIM.setText("");
-                    }
+                    edit(new Mahasiswa(key, namaVal, nimVal), key);
+                    inputNama.setText("");
+                    inputNIM.setText("");
+                    key = "";
                 }
             }
         });
@@ -151,21 +130,22 @@ public class MainActivity extends AppCompatActivity {
                             .show();
                 }
                 else{
-                    delete(new Mahasiswa(namaVal, nimVal));
+                    delete(new Mahasiswa(key, namaVal, nimVal));
                     inputNama.setText("");
                     inputNIM.setText("");
+                    key = "";
                 }
             }
         });
     }
 
     private void submit(Mahasiswa mhs){
-        database.child("Mahasiswa").child(mhs.getNim()).setValue(mhs);
+        database.child("Mahasiswa").child(mhs.getKey()).setValue(mhs);
     }
-    private void edit(Mahasiswa mhs, String id) {
-        database.child("Mahasiswa").child(id).setValue(mhs);
+    private void edit(Mahasiswa mhs, String key) {
+        database.child("Mahasiswa").child(key).setValue(mhs);
     }
     private void delete(Mahasiswa mhs) {
-        database.child("Mahasiswa").child(mhs.getNim()).removeValue();
+        database.child("Mahasiswa").child(mhs.getKey()).removeValue();
     }
 }

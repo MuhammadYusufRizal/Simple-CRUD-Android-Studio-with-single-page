@@ -27,7 +27,7 @@ public class customAdapter extends ArrayAdapter<Mahasiswa> {
         String nim = getItem(position).getNim();
 
         LayoutInflater inflater = LayoutInflater.from(context);
-        convertView = inflater.inflate(R.layout.row_negara, parent, false);
+        convertView = inflater.inflate(R.layout.row_mahasiswa, parent, false);
 
         TextView vNama = (TextView) convertView.findViewById(R.id.textNama);
         TextView vNIM = (TextView) convertView.findViewById(R.id.textNIM);
