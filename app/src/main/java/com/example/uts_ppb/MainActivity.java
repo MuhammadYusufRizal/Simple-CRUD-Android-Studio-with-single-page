@@ -123,9 +123,17 @@ public class MainActivity extends AppCompatActivity {
                             .show();
                 }
                 else{
-                    edit(new Mahasiswa(namaVal, nimVal), nimVal);
-                    inputNama.setText("");
-                    inputNIM.setText("");
+                    if(!namaVal.matches("\\w+") || !nimVal.matches("\\w+")){
+                        new AlertDialog.Builder(MainActivity.this)
+                                .setTitle("Input hanya berupa karakter dan angka!")
+                                .setNegativeButton("Ok", null)
+                                .show();
+                    }
+                    else {
+                        edit(new Mahasiswa(namaVal, nimVal), nimVal);
+                        inputNama.setText("");
+                        inputNIM.setText("");
+                    }
                 }
             }
         });
