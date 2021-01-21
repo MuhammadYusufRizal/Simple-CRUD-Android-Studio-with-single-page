@@ -39,6 +39,7 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
+        key = "";
         listview = findViewById(R.id.listview);
 
         btnAdd = (Button) findViewById(R.id.btnAdd);
@@ -93,6 +94,7 @@ public class MainActivity extends AppCompatActivity {
                     inputNama.setText("");
                     inputNIM.setText("");
                 }
+                key = "";
             }
         });
 
@@ -105,6 +107,12 @@ public class MainActivity extends AppCompatActivity {
                 if(TextUtils.isEmpty(namaVal) || TextUtils.isEmpty(nimVal)){
                     new AlertDialog.Builder(MainActivity.this)
                             .setTitle("Field tidak boleh kosong!")
+                            .setNegativeButton("Ok", null)
+                            .show();
+                }
+                else if(key == ""){
+                    new AlertDialog.Builder(MainActivity.this)
+                            .setTitle("Pilih Data yang ingin diubah!")
                             .setNegativeButton("Ok", null)
                             .show();
                 }
